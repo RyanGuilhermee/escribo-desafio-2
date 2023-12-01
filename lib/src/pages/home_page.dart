@@ -14,6 +14,10 @@ class _HomePageState extends State<HomePage> {
   final BooksStore store =
       BooksStore(repository: BooksRepository(client: HttpClient()));
 
+  bool booksVisible = true;
+  bool favVisible = false;
+  final favoriteBooks = [];
+
   @override
   void initState() {
     super.initState();
@@ -60,51 +64,106 @@ class _HomePageState extends State<HomePage> {
                         Container(
                           margin: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              setState(() {
+                                favVisible = false;
+                                booksVisible = true;
+                              });
+                            },
                             child: const Text('Livros'),
                           ),
                         ),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            setState(() {
+                              favVisible = true;
+                              booksVisible = false;
+                            });
+                          },
                           child: const Text('Favoritos'),
                         ),
                       ],
                     ),
                     const Divider(),
-                    Expanded(
-                        child: GridView.count(
-                      crossAxisCount: 2,
-                      children:
-                          List.generate(store.state.value.length, (index) {
-                        final book = store.state.value[index];
+                    Visibility(
+                      visible: booksVisible,
+                      child: Expanded(
+                          child: GridView.count(
+                        crossAxisCount: 2,
+                        children:
+                            List.generate(store.state.value.length, (index) {
+                          final book = store.state.value[index];
 
-                        return Center(
-                          child: Column(children: [
-                            SizedBox(
-                              height: 125,
-                              width: 125,
-                              child: ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.transparent,
-                                  elevation: 0,
+                          return Center(
+                            child: Column(children: [
+                              SizedBox(
+                                height: 125,
+                                width: 125,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    favoriteBooks.add(book);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.transparent,
+                                    elevation: 0,
+                                  ),
+                                  child: Image.network(book.coverUrl),
                                 ),
-                                child: Image.network(book.coverUrl),
                               ),
-                            ),
-                            Text(book.title,
-                                style: const TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                    overflow: TextOverflow.ellipsis)),
-                            Text(
-                              book.author,
-                              style: const TextStyle(fontSize: 10),
-                            ),
-                          ]),
-                        );
-                      }),
-                    ))
+                              Text(book.title,
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      overflow: TextOverflow.ellipsis)),
+                              Text(
+                                book.author,
+                                style: const TextStyle(fontSize: 10),
+                              ),
+                            ]),
+                          );
+                        }),
+                      )),
+                    ),
+                    Visibility(
+                      visible: favVisible,
+                      child: Expanded(
+                          child: GridView.count(
+                        crossAxisCount: 2,
+                        children: List.generate(favoriteBooks.length, (index) {
+                          final favBook = favoriteBooks[index];
+
+                          return Center(
+                            child: Column(children: [
+                              SizedBox(
+                                height: 125,
+                                width: 125,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      favoriteBooks.removeAt(index);
+                                    });
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.transparent,
+                                    elevation: 0,
+                                  ),
+                                  child: Image.network(favBook.coverUrl),
+                                ),
+                              ),
+                              Text(favBook.title,
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      overflow: TextOverflow.ellipsis)),
+                              Text(
+                                favBook.author,
+                                style: const TextStyle(fontSize: 10),
+                              ),
+                            ]),
+                          );
+                        }),
+                      )),
+                    ),
                   ],
                 ),
               );
