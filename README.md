@@ -1,16 +1,29 @@
-# desafio_escribo_2
+# Desafio Técnico Escribo 2
 
-A new Flutter project.
+## Setup
 
-## Getting Started
+### Requisitos
 
-This project is a starting point for a Flutter application.
+```
+Flutter versão 3.16.1
+```
 
-A few resources to get you started if this is your first Flutter project:
+### Instalando as dependências
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+```bash
+$ flutter pub get
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Executando
+
+**Modo debugging:**
+
+```bash
+$ flutter run lib/main.dart
+```
+
+**Release:**
+
+```
+Instale o apk que está na raiz do projeto (apk/app-release.apk)
+```
